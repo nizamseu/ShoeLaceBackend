@@ -17,6 +17,11 @@ const run =  async ()=>{
     try{
        await client.connect();
        console.log("mongo");
+
+
+       app.get('/',(req,res)=>{
+           res.json("hello World")
+       })
     }
     finally{
     //    await client.close();
