@@ -28,13 +28,44 @@ const run =  async ()=>{
    
        const database =client.db('shoeLace');
        const userCollection = database.collection('users');
+       const userReviewsCollection = database.collection('userReviews');
     //    const ItemsCollection = database.collection('items');
 
+    // add user to DB
         app.post('/addUser',async(req,res)=>{
             const userData = req.body;
             const result = await userCollection.insertOne(userData)
             res.json(result)
         })
+
+
+
+        //make an Admin
+        app.put('/makeAdmin',async(req,res)=>{
+           
+            const email = req.body.email;
+            const filter = {email:email}
+            console.log(filter);
+
+            const updateUserType={
+                $set:{
+                    userType:'admin',
+                }
+            }
+ const result= await userCollection.updateOne(filter,updateUserType)
+
+            res.send(result)
+        })
+
+// add review 
+
+app.post('/review',async(req,res)=>{
+    console.log(req.body);
+    const data= req.body;
+    const result = await userReviewsCollection.insertOne(data)
+    console.log(result);
+    res.json(result)
+})
 
 
        app.get('/',(req,res)=>{
