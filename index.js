@@ -69,6 +69,21 @@ app.post('/addProduct',async(req,res)=>{
     const result = await ProductsCollection.insertOne(data)
     res.json(result)
 })
+// load All product
+app.get('/products',async(req,res)=>{
+    const result =  ProductsCollection.find({})
+    const users = await result.toArray();
+    res.json(users)
+})
+
+
+// load single Products 
+app.delete('/product/:id',async(req,res)=>{      
+    const id = req.params.id;
+    const result = await ProductsCollection.deleteOne({_id:ObjectId(id)});
+    res.json(result)
+    
+})
 
 
        app.get('/',(req,res)=>{
