@@ -29,6 +29,7 @@ const run =  async ()=>{
        const database =client.db('shoeLace');
        const userCollection = database.collection('users');
        const userReviewsCollection = database.collection('userReviews');
+       const ProductsCollection = database.collection('products');
     //    const ItemsCollection = database.collection('items');
 
     // add user to DB
@@ -42,17 +43,14 @@ const run =  async ()=>{
 
         //make an Admin
         app.put('/makeAdmin',async(req,res)=>{
-           
             const email = req.body.email;
             const filter = {email:email}
-            console.log(filter);
-
             const updateUserType={
                 $set:{
                     userType:'admin',
                 }
             }
- const result= await userCollection.updateOne(filter,updateUserType)
+        const result= await userCollection.updateOne(filter,updateUserType)
 
             res.send(result)
         })
@@ -60,10 +58,15 @@ const run =  async ()=>{
 // add review 
 
 app.post('/review',async(req,res)=>{
-    console.log(req.body);
     const data= req.body;
     const result = await userReviewsCollection.insertOne(data)
-    console.log(result);
+    res.json(result)
+})
+
+// add new product
+app.post('/addProduct',async(req,res)=>{
+    const data= req.body;
+    const result = await ProductsCollection.insertOne(data)
     res.json(result)
 })
 
