@@ -30,6 +30,7 @@ const run =  async ()=>{
        const userCollection = database.collection('users');
        const userReviewsCollection = database.collection('userReviews');
        const ProductsCollection = database.collection('products');
+       const userOrderCollection = database.collection('orders');
     //    const ItemsCollection = database.collection('items');
 
     // add user to DB
@@ -63,6 +64,27 @@ app.post('/review',async(req,res)=>{
     res.json(result)
 })
 
+
+
+
+// Load review 
+
+app.get('/review',async(req,res)=>{
+    const result =  userReviewsCollection.find({})
+    const users = await result.toArray();
+    res.json(users)
+})
+
+
+
+// add order
+app.post('/order',async(req,res)=>{
+    const data= req.body;
+    const result = await userOrderCollection.insertOne(data)
+    console.log(result);
+    res.json(result)
+})
+
 // add new product
 app.post('/addProduct',async(req,res)=>{
     const data= req.body;
@@ -77,13 +99,26 @@ app.get('/products',async(req,res)=>{
 })
 
 
-// load single Products 
+// delete single Products 
 app.delete('/product/:id',async(req,res)=>{      
     const id = req.params.id;
     const result = await ProductsCollection.deleteOne({_id:ObjectId(id)});
     res.json(result)
     
 })
+
+
+// Find single Item 
+app.get('/product/:id',async(req,res)=>{
+           
+    const id = req.params.id;
+    console.log(id);
+    const query = {_id:ObjectId(id)}
+    const result = await ProductsCollection.findOne(query);
+    res.send(result)
+    
+})
+
 
 
        app.get('/',(req,res)=>{
