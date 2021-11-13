@@ -80,6 +80,7 @@ app.get('/review',async(req,res)=>{
 // add order
 app.post('/order',async(req,res)=>{
     const data= req.body;
+    console.log(data);
     const result = await userOrderCollection.insertOne(data)
     console.log(result);
     res.json(result)
@@ -123,11 +124,8 @@ app.get('/product/:id',async(req,res)=>{
 
         app.get('/userOrders/:email',async(req,res)=>{
             const email = req.params.email;
-                const query = {'user':{'email':email}}
             const result =  userOrderCollection.find({'email':email});
             const usersData = await result.toArray();
-            console.log(usersData);
-            console.log(usersData);
             res.send(usersData)
         })
 
@@ -166,6 +164,17 @@ app.patch('/updateOrderStatus/:id',async(req,res)=>{
     })
 
 
+
+//    find user Type 
+app.get('/users/:email',async(req,res)=>{
+    const email = req.params.email;
+    console.log(email);
+    const result = await userCollection.findOne({'email':email});
+   
+    // const usersData = await result.toArray();
+    console.log(result);
+    res.json(result)
+}) 
 
        app.get('/',(req,res)=>{
            res.json("hello World")
