@@ -119,6 +119,52 @@ app.get('/product/:id',async(req,res)=>{
     
 })
 
+// Find products using email 
+
+        app.get('/userOrders/:email',async(req,res)=>{
+            const email = req.params.email;
+                const query = {'user':{'email':email}}
+            const result =  userOrderCollection.find({'email':email});
+            const usersData = await result.toArray();
+            console.log(usersData);
+            console.log(usersData);
+            res.send(usersData)
+        })
+
+
+
+// delete single Products 
+app.delete('/deleteOrder/:id',async(req,res)=>{      
+    const id = req.params.id;
+    const result = await userOrderCollection.deleteOne({_id:ObjectId(id)});
+    res.json(result)
+    
+})
+
+
+app.get('/orders',async(req,res)=>{
+    const result =  userOrderCollection.find({})
+    const users = await result.toArray();
+    res.json(users)
+})
+
+
+
+app.patch('/updateOrderStatus/:id',async(req,res)=>{
+    const id=req.params.id;
+ 
+    const value=req.body.status;
+    const filter = {_id:id}
+    const updateStatus={
+        $set:{status:value}
+    }
+    if(id && value){
+        const result = await userOrderCollection.updateOne(filter,updateStatus)
+        res.send(result.modifiedCount>0)
+    }
+     else res.send(false)  
+    })
+
 
 
        app.get('/',(req,res)=>{
