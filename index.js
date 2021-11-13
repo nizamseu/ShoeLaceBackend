@@ -152,7 +152,7 @@ app.patch('/updateOrderStatus/:id',async(req,res)=>{
     const id=req.params.id;
  
     const value=req.body.status;
-    const filter = {_id:id}
+    const filter = {_id:ObjectId(id)}
     const updateStatus={
         $set:{status:value}
     }
